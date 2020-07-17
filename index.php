@@ -61,9 +61,9 @@
         .six img{
             max-width: 100%;
         }
-        div#matriz th,div#matriz td{
-            font-size: 0.2em;
-            background-color: red;
+        th,td{
+            font-size: 0.7em;
+            border: 1px solid white;
         }
     </style>
     <style type="text/css">
@@ -85,7 +85,40 @@
 
         </div>
         <div class="face two">
-              
+              <?php 
+                require_once("insertar.php");
+                $obj = new Venta();
+                $res = $obj->clientes();
+               ?>
+               <table>
+                   <tr>
+                       <?php 
+                            echo "<th></th>";
+                            $contador = 1;
+                            while($fila=$res->fetch_assoc()){
+                                echo "<th id='cliente".$fila["id"]."'>".$fila["nombre"]."</th>";
+                            }
+                        ?>
+                   </tr>
+                   <?php 
+                        $res = $obj->productos();
+                        while($fila = $res->fetch_assoc()){
+                            echo "<tr>";
+                            echo "<td>".$fila["nombre"]."</td>";
+                            $res2 = $obj->matriz($fila["id"]);
+                            $fila2 = $res2->fetch_assoc();
+                            for($i = 1; $i<=10; $i++){
+                                if($i == $fila2["id_cliente"]){
+                                    echo "<td>".$fila2["cantidad"]."</td>";
+                                    $fila2 = $res2->fetch_assoc();
+                                }else{
+                                    echo "<td></td>";
+                                }
+                            }
+                            echo "</tr>";
+                        }
+                    ?>
+               </table>
         </div>
         <div class="face three">
             
